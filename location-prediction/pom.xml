@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.knoesis.location</groupId>
+  <artifactId>location-prediction</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Location Prediction of Twitter Users</name>
+  <description>Location Prediction of Twitter Users using Wikipedia	</description>
+  <dependencies>
+  <dependency>
+      <groupId>info.bliki.wiki</groupId>
+      <artifactId>bliki-core</artifactId>
+      <version>3.0.19</version>
+  </dependency>
+  <dependency>
+	<groupId>log4j</groupId>
+	<artifactId>log4j</artifactId>
+	<version>1.2.16</version>
+ </dependency>
+ <dependency>
+	<groupId>org.xerial</groupId>
+	<artifactId>sqlite-jdbc</artifactId>
+	<version>3.7.2</version>
+</dependency>
+<dependency>
+	<groupId>net.sf.jung</groupId>
+	<artifactId>jung-graph-impl</artifactId>
+	<version>2.0.1</version>
+</dependency>
+<dependency>
+	<groupId>net.sf.jung</groupId>
+	<artifactId>jung-algorithms</artifactId>
+	<version>2.0.1</version>
+</dependency>
+<dependency>
+	<groupId>org.json</groupId>
+	<artifactId>json</artifactId>
+	<version>20140107</version>
+</dependency>
+ </dependencies>
+ <build>
+  <plugins>
+   <plugin>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.1</version>
+    <configuration>
+      <source>1.7</source>
+      <target>1.7</target>
+      <fork>true</fork>
+      <meminitial>1024m</meminitial>
+      <maxmem>6144m</maxmem>
+    </configuration>
+   </plugin>
+   <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>exec-maven-plugin</artifactId>
+    <configuration>org.knoesis.location.wiki.LinkExtractor</configuration>
+   </plugin>
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-surefire-plugin</artifactId>
+  <version>2.4.1</version>
+  <configuration>
+    <forkMode>once</forkMode>
+    <argLine>-Xmx4g</argLine>
+    <argLine>-Xms2g</argLine>
+  </configuration>
+</plugin>
+  </plugins>
+ </build> 
+</project>

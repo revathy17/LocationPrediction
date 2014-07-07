@@ -17,5 +17,3 @@ The input to this module is a set of tweets (approximately 1000) of the user who
 Predict the location of a Twitter user using the Wikipedia entities spotted in "User Profile Generator" and the knowledge base created in "Knowledge-base Generator" module.
 
 
-
-

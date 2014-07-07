@@ -45,7 +45,7 @@ public class RunnableWikiKnowledgebaseGenerator implements Runnable {
 		try{						
 			for(String loc : locations) {
 				Map<String, Double> pmiScore = score.scoreLocalEntity(loc);			
-				ls.insertScore(loc, pmiScore, typeOfScore);
+				ls.upsertScore(loc, pmiScore, typeOfScore);
 			}
 		} catch (StorageException se) {
 			se.printStackTrace();

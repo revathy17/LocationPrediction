@@ -2,7 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.knoesis.location</groupId>
   <artifactId>location-prediction</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <version>1.0</version>
   <name>Location Prediction of Twitter Users</name>
   <description>Location Prediction of Twitter Users using Wikipedia	</description>
   <dependencies>

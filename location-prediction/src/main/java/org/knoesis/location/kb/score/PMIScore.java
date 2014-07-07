@@ -47,16 +47,20 @@ public class PMIScore implements Score {
 			} catch (StorageException se) {
 				log.error("Error in reading internal links of the location: " + location, se); 
 			}
-			locLinks.add(location);				
 			
 			/**
 			 * The location itself is an internal link with respect to the city
 			 */			
+			locLinks.add(location);				
+			
+			/**
+			 * Extract the main pages that contain the local entities as internal links
+			 */
 			try {
-				mainPages = ws.getMainPages(locLinks);			
+				mainPages = ws.getMainPages(locLinks);
 			} catch (RetrievalException re) {
-				log.error("Error in fetching main pages of local entities for location: " + location, re);
-			}			
+				re.printStackTrace();
+			}
 			
 			/**
 			 * Determine all the count of the Wikipedia pages that the location appears in, as an internal link  

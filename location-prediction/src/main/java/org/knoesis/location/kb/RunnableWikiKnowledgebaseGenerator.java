@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.knoesis.location.exceptions.RetrievalException;
 import org.knoesis.location.exceptions.StorageException;
-import org.knoesis.location.kb.score.BCScore;
 import org.knoesis.location.kb.score.PMIScore;
 import org.knoesis.location.kb.score.Score;
 import org.knoesis.location.kb.score.ScoreType;
@@ -32,14 +31,11 @@ public class RunnableWikiKnowledgebaseGenerator implements Runnable {
 	public RunnableWikiKnowledgebaseGenerator(ScoreType scoreType, List<String> locations) {
 		this.typeOfScore = scoreType.toString().toLowerCase();
 		this.locations = new ArrayList<String>(locations);
-		if(scoreType.equals(ScoreType.PMI_SCORE))
-			try {
-				score = new PMIScore();
-			} catch (RetrievalException re) {
-				re.printStackTrace();
-			}
-		else if(scoreType.equals(ScoreType.BC_SCORE))
-			score = new BCScore();
+		try {
+			score = new PMIScore();
+		} catch (RetrievalException re) {
+			re.printStackTrace();
+		}		
 	}
 		
 	@Override

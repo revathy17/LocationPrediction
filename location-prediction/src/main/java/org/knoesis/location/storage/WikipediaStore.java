@@ -169,32 +169,26 @@ public class WikipediaStore {
 			Map<String, List<String>> mainPages = new HashMap<String, List<String>>();
 			for(String pg : pages) 
 				mainPages.put(pg, new ArrayList<String>());
-			
+			log.info("Querying the database for main pages");
 			try {
 				stmt = connection.createStatement();	
 				ResultSet rs = stmt.executeQuery(sql);
-				while(rs.next()) {					
+				while(rs.next()) {
 					List<String> internalLinks = split(rs.getString("internal_links"));
 					for(String pg : pages) {
 						if(internalLinks.contains(pg)) {
-							List<String> temp = null;
-							if(mainPages.containsKey(pg)) {
-								temp = mainPages.get(pg);
-								temp.add(rs.getString("page_name"));								
-							} else {
-								temp = new ArrayList<String>();
-								temp.add(rs.getString("page_name"));
-							}
+							List<String> temp = mainPages.get(pg);
+							temp.add(rs.getString("page_name"));
 							mainPages.put(pg, temp);						
 						} 							
 					}			
 				}
-		
+				log.info("WikipediaStore: Main Pages size: " + mainPages.size());		
 			} catch (SQLException sqle) {				
 				throw new RetrievalException("Error in looking up wikipedia for main pages",sqle);
 			} finally {
 				DBManager.cleanUpDatabase(connection, stmt);
-			}		
+			}	
 			return mainPages;
 		}
 		

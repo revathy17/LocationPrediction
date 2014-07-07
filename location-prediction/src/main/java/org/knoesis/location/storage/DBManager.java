@@ -26,7 +26,7 @@ public class DBManager {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			SQLiteConfig config = new SQLiteConfig();
-			config.setReadOnly(readOnly);			
+			config.setReadOnly(readOnly);		
 			connection = DriverManager.getConnection(connectionString,config.toProperties());
 		} catch(ClassNotFoundException|SQLException e) {
 			e.printStackTrace();

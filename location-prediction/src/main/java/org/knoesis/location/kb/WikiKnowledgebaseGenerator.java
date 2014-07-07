@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.knoesis.location.exceptions.StorageException;
 import org.knoesis.location.exceptions.WikipediaParserException;
+import org.knoesis.location.kb.score.BCScore;
 import org.knoesis.location.kb.score.JaccardScore;
 import org.knoesis.location.kb.score.Score;
 import org.knoesis.location.kb.score.ScoreType;
@@ -62,41 +63,32 @@ public class WikiKnowledgebaseGenerator implements KnowledgebaseGenerator {
 	public void createKnowledgebase(List<String> locations, ScoreType scoreType) throws StorageException {
 		
 		LocationStore ls = new LocationStore();
-		if(scoreType.equals(ScoreType.TVERSKY_SCORE)) {
-			for(String loc : locations) {
-				Score score = new TverskyScore();
-				/**
-				 * Compute the Tversky Score for all the local entities of a location
-				 */
-				Map<String,Double> scores = score.scoreLocalEntity(loc);
-				/**
-				 * Insert the location, local entities and their Tversky Scores in the knowledgebase
-				 */
-				ls.insertScore(loc, scores, scoreType.toString().toLowerCase());
-			}
-		} else if(scoreType.equals(ScoreType.JACCARD_SCORE)) {
-			for(String loc : locations) {
-				Score score = new JaccardScore();
-				/**
-				 * Compute the Jaccard Score for all the local entities of a location
-				 */
-				Map<String,Double> scores = score.scoreLocalEntity(loc);
-				/**
-				 * Insert the location, local entities and their Jaccard Scores in the knowledgebase
-				 */
-				ls.insertScore(loc, scores, "jaccard_score");
-			}
-		} else if(scoreType.equals(ScoreType.BC_SCORE) || scoreType.equals(ScoreType.PMI_SCORE)) {
-			/**
-			 * Run multiple threads for computing the Betweenness Centrality and Pointwise Mutual Information Score
-			 */
-			RunnableWikiKnowledgebaseGenerator.runThreads(locations, scoreType);								
+		Score score = null;
+		
+		if(scoreType.equals(ScoreType.TVERSKY_SCORE)) 
+			score = new TverskyScore();
+		else if(scoreType.equals(ScoreType.JACCARD_SCORE))
+			score = new JaccardScore();
+		else if(scoreType.equals(ScoreType.BC_SCORE))
+			score = new BCScore();
+		
+		if(score != null) {		
+			for(String loc : locations) {				
+					/**
+					 * Compute the score for all the local entities of a location
+					 */
+					Map<String,Double> scores = score.scoreLocalEntity(loc);
+					/**
+					 * Insert the location, local entities and their Tversky Scores in the knowledgebase
+					 */
+					ls.upsertScore(loc, scores, scoreType.toString().toLowerCase());			
+			} 				
 		} else {
-			System.out.println("Invalid Score Type!");
+			/**
+			 * Compute the PMI scores
+			 */
+			RunnableWikiKnowledgebaseGenerator.runThreads(locations, scoreType);
 		}
 		
 	}
-
-	
-
 }
